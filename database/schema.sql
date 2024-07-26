@@ -70,3 +70,44 @@ CREATE TABLE saved_courses(
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
 )
+
+--Pull Req 7/25
+CREATE TABLE profile_viewers (
+    viewer_id INT NOT NULL,
+    viewed_id INT NOT NULL,
+    viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (viewer_id, viewed_id),
+    FOREIGN KEY (viewer_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (viewed_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- stores a list of all possible interests
+CREATE TABLE interests (
+    interest_id INT AUTO_INCREMENT PRIMARY KEY,
+    interest_name VARCHAR(255) NOT NULL UNIQUE
+);
+
+--INSERT INTERESTS
+ /*INSERT INTO interests (interest_name) VALUES ('science');
+INSERT INTO interests (interest_name) VALUES ('business');
+INSERT INTO interests (interest_name) VALUES ('literature');
+INSERT INTO interests (interest_name) VALUES ('political science'); */
+
+--ADD USER INTEREST
+/*INSERT INTO user_interests (user_id, interest_id)
+VALUES (1, (SELECT interest_id FROM interests WHERE interest_name = 'science'));*/
+
+--links users to their selected interests
+CREATE TABLE user_interests (
+    user_id INT NOT NULL,
+    interest_id INT NOT NULL,
+    PRIMARY KEY (user_id, interest_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (interest_id) REFERENCES interests(interest_id) ON DELETE CASCADE
+);
+
+--Retreive User Interest
+/*SELECT i.interest_name
+FROM user_interests ui
+JOIN interests i ON ui.interest_id = i.interest_id
+WHERE ui.user_id = 1;*/
